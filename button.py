@@ -6,7 +6,7 @@ from customtkinter.windows.widgets.image import CTkImage
 from settings import *
 
 class Button(CTkButton):
-    def __init__(self, parent, row, column, funct, text, font, color):
+    def __init__(self, parent, row, col, funct, text, font, color):
         super().__init__(
             master = parent, 
             text = text,
@@ -16,4 +16,26 @@ class Button(CTkButton):
             fg_color = COLORS[color]['fg'],
             hover_color = COLORS[color]['hover'],
             text_color = COLORS[color]['text'])
-        self.grid(column = column, row = row, sticky = 'NSEW', padx = STYLING['gap'], pady = STYLING['gap'])
+        self.grid(column = col, row = row, sticky = 'NSEW', padx = STYLING['gap'], pady = STYLING['gap'])
+
+class NumberButton(Button):
+    def __init__(self, parent, row, col, funct, text, font, color):
+        super().__init__(
+            parent = parent, 
+            text = text,
+            funct = lambda: funct(text),
+            col = col,
+            row = row,
+            font = font,
+            color = color)
+        
+class MathButton(Button):
+    def __init__(self, parent, row, col, funct, text, operator, font, color):
+        super().__init__(
+            parent = parent, 
+            text = text,
+            funct = lambda: funct(operator),
+            col = col,
+            row = row,
+            font = font,
+            color = color)

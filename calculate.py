@@ -1,7 +1,8 @@
-from button import Button
+from button import Button, NumberButton, MathButton
 from customtkinter.windows.widgets.font import CTkFont
 from customtkinter.windows.widgets.image import CTkImage
 from settings import *
+import math
 import customtkinter as ctk
 import darkdetect
 
@@ -25,6 +26,8 @@ class Calculator(ctk.CTk):
         # data
         self.output_string = ctk.StringVar(value = '0')
         self.formula_string = ctk.StringVar(value = '')
+        self.display_chars = []
+        self.full_op = []
 
         # widgets
         self.createWidgets()
@@ -36,6 +39,7 @@ class Calculator(ctk.CTk):
         main_font = CTkFont(family = FONT_STYLE, size=FONT_SIZE)
         output_font = CTkFont(family = FONT_STYLE, size=OUTPUT_FONT_SIZE)
 
+
         OutputLabel(self, 0, 'SE', main_font, self.formula_string) # formula cell
         OutputLabel(self, 1, 'E', output_font, self.output_string) # output cell
 
@@ -44,44 +48,71 @@ class Calculator(ctk.CTk):
                 parent = self, 
                 funct = eval(f"self.{operation}"),
                 row = OPERATIONS_POSITION[operation]['row'], 
-                column = OPERATIONS_POSITION[operation]['col'], 
+                col = OPERATIONS_POSITION[operation]['col'], 
                 text = OPERATIONS_POSITION[operation]['text'],
                 font = main_font,
                 color = 'dark-gray')
             
         for number in NUMBER_POSITION:
-            Button(
+            NumberButton(
                 parent = self,
-                funct = '',
+                text = number,
+                funct = self.NumberPress,
                 # funct = eval(f"self.{operation}"),
                 row = NUMBER_POSITION[number]['row'], 
-                column = NUMBER_POSITION[number]['col'], 
-                text = number,
+                col = NUMBER_POSITION[number]['col'], 
                 font = main_font,
                 color= 'light-gray')
             
         for symbol in SYMBOLS_POSITION:
-            Button(
+            MathButton(
                 parent = self,
-                funct = '',
-                # funct = eval(f"self.{operation}"),
+                funct = self.MathPress,
                 row = SYMBOLS_POSITION[symbol]['row'], 
-                column = SYMBOLS_POSITION[symbol]['col'], 
+                col = SYMBOLS_POSITION[symbol]['col'], 
                 text = SYMBOLS_POSITION[symbol]['character'],
-                # operator = SYMBOLS_POSITION[symbol]['operator'],
+                operator = SYMBOLS_POSITION[symbol]['operator'],
                 font = main_font,
                 color= 'orange')
         
+    def NumberPress(self, value):
+        self.display_chars.append(str(value))
+        number = ''.join(self.display_chars)
+        self.formula_string.set(number)
 
+    def MathPress(self, value):
+        current_number = ''.join(self.display_chars)
+
+        if current_number:
+            self.full_op.append(current_number)
+
+            if value != '=':
+                self.full_op.append(value)
+                self.display_chars = []
+                self.formula_string.set(''.join(self.full_op))
+                
+            else:
+                self.output_string.set(eval(''.join(self.full_op)))
         
     def clear(self):
-        print("dupa")
+        self.formula_string.set('')
+        self.output_string.set('0')
+        self.display_chars = []
+        self.full_op = []
 
     def pow2(self):
-        print("dupa2")
+        current_number = ''.join(self.display_chars)
+
+        if current_number:
+            self.formula_string.set(f"({current_number})²")
+            self.output_string.set(str(int(current_number)**2))
 
     def sqrt2(self):
-        print("dupa3")
+        current_number = ''.join(self.display_chars)
+
+        if current_number:
+            self.formula_string.set(f"√({current_number})")
+            self.output_string.set(str(math.sqrt(int(current_number))))
 
     def inverse(self):
         print("dupa4")

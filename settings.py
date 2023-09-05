@@ -14,17 +14,17 @@ STYLING = {
 }
 
 NUMBER_POSITION = {
-    ',' : {'col' : 2, 'row' : 6, 'span' : 1},
-    1 : {'col' : 0, 'row' : 5, 'span' : 1},
-    2 : {'col' : 1, 'row' : 5, 'span' : 1},
-    3 : {'col' : 2, 'row' : 5, 'span' : 1},
-    4 : {'col' : 0, 'row' : 4, 'span' : 1},
-    5 : {'col' : 1, 'row' : 4, 'span' : 1},
-    6 : {'col' : 2, 'row' : 4, 'span' : 1},
-    7 : {'col' : 0, 'row' : 3, 'span' : 1},
-    8 : {'col' : 1, 'row' : 3, 'span' : 1},
-    9 : {'col' : 2, 'row' : 3, 'span' : 1},
-    0 : {'col' : 1, 'row' : 6, 'span' : 1},
+    ',' : {'col' : 2, 'row' : 6},
+    1 : {'col' : 0, 'row' : 5},
+    2 : {'col' : 1, 'row' : 5},
+    3 : {'col' : 2, 'row' : 5},
+    4 : {'col' : 0, 'row' : 4},
+    5 : {'col' : 1, 'row' : 4},
+    6 : {'col' : 2, 'row' : 4},
+    7 : {'col' : 0, 'row' : 3},
+    8 : {'col' : 1, 'row' : 3},
+    9 : {'col' : 2, 'row' : 3},
+    0 : {'col' : 1, 'row' : 6},
 
 }
 
