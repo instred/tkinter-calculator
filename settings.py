@@ -39,17 +39,17 @@ SYMBOLS_POSITION = {
 
 OPERATIONS_POSITION = {
     'clear' : {'col' : 0, 'row' : 2, 'text' : 'AC'},
-    'pow2' : {'col' : 1, 'row' : 2, 'text' : 'x^2'},
-    'sqrt2' : {'col' : 2, 'row' : 2, 'text' : 'x^1/2'},
+    'pow2' : {'col' : 1, 'row' : 2, 'text' : 'x²'},
+    'sqrt2' : {'col' : 2, 'row' : 2, 'text' : '√x'},
     'inverse' : {'col' : 0, 'row' : 6, 'text' : '-/+'},
 
 }
 
 COLORS = {
     'light-gray' : {'fg' : ('#505050', '#D4D4D2'), 'hover': ('#686868', '#EFEFED'), 'text' : ('white', 'black')},
-    'light-gray' : {'fg' : ('#D4D4D2', '#505050'), 'hover': ('#EFEFED', '#686868'), 'text' : ('black', 'white')},
-    'light-gray' : {'fg' : '#FF9500', 'hover': '#FFB143', 'text' : ('black', 'white')},
-    'light-gray' : {'fg' : 'white', 'hover': 'white', 'text' : ('black', '#FF9500')},
+    'dark-gray' : {'fg' : ('#D4D4D2', '#505050'), 'hover': ('#EFEFED', '#686868'), 'text' : ('black', 'white')},
+    'orange' : {'fg' : '#FF9500', 'hover': '#FFB143', 'text' : ('black', 'white')},
+    'orange-hover' : {'fg' : 'white', 'hover': 'white', 'text' : ('black', '#FF9500')},
 
 }
 
