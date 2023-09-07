@@ -1,6 +1,5 @@
 from button import Button, NumberButton, MathButton
 from customtkinter.windows.widgets.font import CTkFont
-from customtkinter.windows.widgets.image import CTkImage
 from settings import *
 import math
 import customtkinter as ctk
@@ -58,7 +57,6 @@ class Calculator(ctk.CTk):
                 parent = self,
                 text = number,
                 funct = self.NumberPress,
-                # funct = eval(f"self.{operation}"),
                 row = NUMBER_POSITION[number]['row'], 
                 col = NUMBER_POSITION[number]['col'], 
                 font = main_font,
@@ -74,11 +72,15 @@ class Calculator(ctk.CTk):
                 operator = SYMBOLS_POSITION[symbol]['operator'],
                 font = main_font,
                 color= 'orange')
-        
+            
+    # number press function    
     def NumberPress(self, value):
+
         self.display_chars.append(str(value))
         number = ''.join(self.display_chars)
-        self.formula_string.set(number)
+        self.output_string.set(number)
+
+
 
     def MathPress(self, value):
         current_number = ''.join(self.display_chars)
@@ -86,14 +88,36 @@ class Calculator(ctk.CTk):
         if current_number:
             self.full_op.append(current_number)
 
+            # basic arithmethic button
             if value != '=':
                 self.full_op.append(value)
-                self.display_chars = []
-                self.formula_string.set(''.join(self.full_op))
-                
+                self.display_chars.clear()
+
+                self.output_string.set('')
+                self.formula_string.set(' '.join(self.full_op))
+
+            # '=' button 
             else:
-                self.output_string.set(eval(''.join(self.full_op)))
-        
+                formula = ''.join(self.full_op)
+                result = eval(formula)
+
+                # formatting the result
+                if isinstance(result, float):
+                    
+                    if result.is_integer():
+                        result = int(result)
+                    else:
+                        result = round(result, 6)
+
+                
+                self.full_op.clear()
+                self.display_chars = [str(result)]
+
+                self.output_string.set(result)
+                self.formula_string.set(f"{formula} =")
+                
+# functions for every math operation      
+
     def clear(self):
         self.formula_string.set('')
         self.output_string.set('0')
@@ -104,23 +128,131 @@ class Calculator(ctk.CTk):
         current_number = ''.join(self.display_chars)
 
         if current_number:
-            self.formula_string.set(f"({current_number})²")
-            self.output_string.set(str(int(current_number)**2))
+            
+            result = float(current_number)**2
+            if isinstance(result, float):
+                    
+                    if result.is_integer():
+                        result = int(result)
+                    else:
+                        result = round(result, 6)
+
+            self.full_op.clear()
+            self.display_chars = [str(result)]
+
+            self.formula_string.set(f"{current_number}²")
+            self.output_string.set(result)
 
     def sqrt2(self):
         current_number = ''.join(self.display_chars)
 
         if current_number:
-            self.formula_string.set(f"√({current_number})")
-            self.output_string.set(str(math.sqrt(int(current_number))))
+            
+            result = math.sqrt(float(current_number))
+            if isinstance(result, float):
+                    
+                    if result.is_integer():
+                        result = int(result)
+                    else:
+                        result = round(result, 6)
+
+            self.full_op.clear()
+            self.display_chars = [str(result)]
+
+            self.formula_string.set(f"√{current_number}")
+            self.output_string.set(result)
 
     def inverse(self):
-        print("dupa4")
+        current_number = ''.join(self.display_chars)
+
+        if current_number:
+            if float(current_number) > 0:
+                self.display_chars.insert(0, '-')
+            else:
+                del self.display_chars[0]
+
+            self.output_string.set(''.join(self.display_chars))
+
+    def fact(self):
+        current_number = ''.join(self.display_chars)
+
+        if current_number and current_number.isdigit():
+            result = factorial(int(current_number))
+
+            self.full_op.clear()
+            self.display_chars = [str(result)]
+
+            self.formula_string.set(f"{current_number}!")
+            self.output_string.set(result)
+
+    def ln(self):
+        current_number = ''.join(self.display_chars)
+
+        if current_number:
+            
+            result = math.log(float(current_number))
+            if isinstance(result, float):
+                    
+                    if result.is_integer():
+                        result = int(result)
+                    else:
+                        result = round(result, 6)
+
+            self.full_op.clear()
+            self.display_chars = [str(result)]
+
+            self.formula_string.set(f"ln({current_number})")
+            self.output_string.set(result)
+
+    def dec(self):
+        current_number = ''.join(self.display_chars)
+
+        if current_number:
+            
+            result = 10**float(current_number)
+            if isinstance(result, float):
+                    
+                    if result.is_integer():
+                        result = int(result)
+                    else:
+                        result = round(result, 6)
+
+            self.full_op.clear()
+            self.display_chars = [str(result)]
+
+            self.formula_string.set(f"10({get_super(current_number)})")
+            self.output_string.set(result)
+
+    def xpowy(self):
+        current_number = ''.join(self.display_chars)
+
+        if current_number:
+            self.full_op.append(current_number)
+            self.full_op.append('**')
+            self.display_chars.clear()
+
+            self.output_string.set('')
+            self.formula_string.set(' '.join(self.full_op))
 
 class OutputLabel(ctk.CTkLabel):
     def __init__(self, parent, row, allign, font, string_variable):
         super().__init__(master = parent, font = font, textvariable = string_variable)
         self.grid(column = 0, columnspan = 4, row = row, sticky = allign, padx = 7)
+
+
+# helper functions
+
+def factorial(val) -> int:
+    if val == 0: return 1
+    if val == 1: return 1
+    else:
+        return val * factorial(val-1)
+
+def get_super(x) -> str:
+    normal = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-=()."
+    super_s = "ᴬᴮᶜᴰᴱᶠᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾQᴿˢᵀᵁⱽᵂˣʸᶻᵃᵇᶜᵈᵉᶠᵍʰᶦʲᵏˡᵐⁿᵒᵖ۹ʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾⋅"
+    res = x.maketrans(''.join(normal), ''.join(super_s))
+    return x.translate(res)
 
 if __name__ == '__main__':
 
